@@ -226,7 +226,7 @@ namespace NeuronNet
                             if (val <= 128 + 128 + 128)
                                 val = 1;
                             else
-                                val = -1;
+                                val = 0;
                             sources[i].Add(val);
                         }
                     }
@@ -258,7 +258,7 @@ namespace NeuronNet
                         if (val <= 128 + 128 + 128)
                             val = 1;
                         else
-                            val = -1;
+                            val = 0;
                         source.Add(val);
                     }
                 if (source.Count != kohonenNet.VectorSize)

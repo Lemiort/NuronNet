@@ -114,9 +114,9 @@ namespace NeuronNet
                         maxDelta = delta;
                     
                 }
-                alpha *= (1-1e-3);
+                alpha *= (1-1e-7);
                 counter++;
-            } while (maxDelta > 1e-6 && alpha > 0);
+            } while (maxDelta > 1e-22);
             //throw new Exception(counter.ToString());
             return;
         }
