@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NeuronNet
 {
-    class HebbNetwork
+    class HebbNetwork: INeuronNetwork
     {
         /// <summary>
         /// связи нейронов первого уровня

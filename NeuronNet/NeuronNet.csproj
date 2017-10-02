@@ -58,6 +58,8 @@
     <Compile Include="ImageStringForm.Designer.cs">
       <DependentUpon>ImageStringForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="INeuronNetwork.cs" />
+    <Compile Include="KohonenNetwork.cs" />
     <Compile Include="Neuron.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

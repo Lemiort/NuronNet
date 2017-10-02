@@ -5,7 +5,7 @@ using System.Text;
 
 namespace NeuronNet
 {
-    class HammingNetwork
+    class HammingNetwork: INeuronNetwork
     {
         /// <summary>
         /// аксоны нейронов первого уровня
