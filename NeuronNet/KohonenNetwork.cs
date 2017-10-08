@@ -17,6 +17,8 @@ namespace NeuronNet
         /// </summary>
         double alpha = 0.7;
 
+        double distanceParam = 5;
+
         /// <summary>
         /// число нейронов в сети
         /// </summary>
@@ -54,7 +56,7 @@ namespace NeuronNet
         }
 
         /// <summary>
-        /// на вход подаются значения от -1, до 1
+        /// на вход подаются значения от 0, до 1
         /// </summary>
         /// <param name="sources"></param>
         public void Init(List<List<double>> sources)
@@ -64,13 +66,14 @@ namespace NeuronNet
             NeuronCount = sources.Count;
             VectorSize = sources[0].Count;
 
+            //инициализация начальных весов
             weights1 = new List<List<double>>();
             for (int i = 0; i < VectorSize; i++)
             {
                 weights1.Add(new List<double>());
                 for (int j = 0; j < NeuronCount; j++)
                 {
-                    weights1[i].Add(rand.NextDouble()*0.1 / Math.Sqrt(VectorSize));
+                    weights1[i].Add(0.5 + (-0.5+rand.NextDouble()) / Math.Sqrt(VectorSize));
                 }
             }
             int counter = 0;
@@ -99,24 +102,31 @@ namespace NeuronNet
                 }
 
                 maxDelta = 0;
-                //коррекция для нейрона-победителя
-                for (int i = 0; i < VectorSize; i++)
+                //коррекция для нейрона-победителя и всех в его окрестности
+                for (int k = 0; k < NeuronCount; k++)
                 {
-                    double delta = weights1[i][mink];
+                    if (this.Distance(k, mink) < this.distanceParam)
+                    {
+                        for (int i = 0; i < VectorSize; i++)
+                        {
+                            double delta = weights1[i][k];
 
-                    //сама коррекция веса
-                    weights1[i][mink] = weights1[i][mink] + alpha * (sources[n][i] - weights1[i][mink]);
-                    ///if (weights1[i][mink] == -1.0)
-                    //    return;
+                            //сама коррекция веса
+                            weights1[i][k] = weights1[i][k] + alpha * (sources[n][i] - weights1[i][k]);
+                            ///if (weights1[i][mink] == -1.0)
+                            //    return;
 
-                    delta = Math.Abs(weights1[i][mink] - delta);
-                    if (maxDelta < delta)
-                        maxDelta = delta;
-                    
+                            delta = Math.Abs(weights1[i][k] - delta);
+                            if (maxDelta < delta)
+                                maxDelta = delta;
+
+                        }
+                    }
                 }
                 alpha *= (1-1e-7);
+                this.distanceParam *= (1 - 1e-2);
                 counter++;
-            } while (maxDelta > 1e-22);
+            } while (maxDelta > 1e-22 && counter < 1e4);
             //throw new Exception(counter.ToString());
             return;
         }
@@ -127,6 +137,22 @@ namespace NeuronNet
             for( int i=0; i< VectorSize; i++)
             {
                 sum += Math.Pow(x[i] - weights1[i][j], 2);
+            }
+            return sum;
+        }
+
+        /// <summary>
+        /// расстояние между двумя нейронами
+        /// </summary>
+        /// <param name="i"></param>
+        /// <param name="j"></param>
+        /// <returns></returns>
+        private double Distance(int i, int j)
+        {
+            double sum = 0;
+            for (int k = 0; k < VectorSize; k++)
+            {
+                sum += Math.Pow(weights1[k][i] - weights1[k][j], 2);
             }
             return sum;
         }
