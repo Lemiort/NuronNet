@@ -15,9 +15,20 @@ namespace NeuronNet
         /// <summary>
         /// коэффициент скорости обучения
         /// </summary>
-        double alpha = 0.7;
+        public double Alpha //0.7
+        {
+            get; 
+            set;
+        }
 
-        double distanceParam = 5;
+        /// <summary>
+        /// какие нейроны считать соседями
+        /// </summary>
+        public double DistanceParam// = 5;
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// число нейронов в сети
@@ -105,14 +116,14 @@ namespace NeuronNet
                 //коррекция для нейрона-победителя и всех в его окрестности
                 for (int k = 0; k < NeuronCount; k++)
                 {
-                    if (this.Distance(k, mink) < this.distanceParam)
+                    if (this.Distance(k, mink) < this.DistanceParam)
                     {
                         for (int i = 0; i < VectorSize; i++)
                         {
                             double delta = weights1[i][k];
 
                             //сама коррекция веса
-                            weights1[i][k] = weights1[i][k] + alpha * (sources[n][i] - weights1[i][k]);
+                            weights1[i][k] = weights1[i][k] + Alpha * (sources[n][i] - weights1[i][k]);
                             ///if (weights1[i][mink] == -1.0)
                             //    return;
 
@@ -123,8 +134,8 @@ namespace NeuronNet
                         }
                     }
                 }
-                alpha *= (1-1e-7);
-                this.distanceParam *= (1 - 1e-2);
+                Alpha *= (1-1e-7);
+                this.DistanceParam *= (1 - 1e-2);
                 counter++;
             } while (maxDelta > 1e-22 && counter < 1e4);
             //throw new Exception(counter.ToString());

@@ -203,6 +203,9 @@ namespace NeuronNet
 
                 kohonenNet = new KohonenNetwork();
 
+                kohonenNet.Alpha = decimal.ToDouble(numericUpDown1.Value);
+                kohonenNet.DistanceParam = decimal.ToDouble(numericUpDown2.Value);
+
                 names = new List<string>();
                 for (int i = 0; i < openFileDialog2.FileNames.Count(); i++)
                 {
@@ -264,7 +267,7 @@ namespace NeuronNet
                 if (source.Count != kohonenNet.VectorSize)
                     MessageBox.Show("Размер картинки не соответствует образцам!");
                 else
-                    MessageBox.Show("Мы думаем, что это " +
+                    MessageBox.Show("Мы думаем, что это тип " +
                         names[kohonenNet.FindImage(source)]);
             }
         }
